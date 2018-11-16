@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "979746247373",
+    "firebase_url": "https://lateral-academy-222711.firebaseio.com",
+    "project_id": "lateral-academy-222711",
+    "storage_bucket": "lateral-academy-222711.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:979746247373:android:2bf5cbd6d0d702f1",
+        "android_client_info": {
+          "package_name": "com.jatin.rewards"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "979746247373-m1qeb969dtll31714sfn7t3ovn4asps5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQ-zsIdZgtWYD-pjbUf-aafymnvx9OhUo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
