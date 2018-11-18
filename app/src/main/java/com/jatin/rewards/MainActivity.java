@@ -2,9 +2,17 @@ package com.jatin.rewards;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -22,7 +30,10 @@ import com.jatin.rewards.utils.Purchase;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -54,10 +65,76 @@ public class MainActivity extends AppCompatActivity {
     public static final String nameField = "entry.1317516008";
     public static final String phoneField = "entry.1563719254";
 
+
+    private AppBarLayout appBar;
+    private EditText edtEmail;
+    private Spinner spinnerCountry;
+    private EditText edtName;
+    private RadioButton rbType1;
+    private RadioButton rbType2;
+    private RadioButton rbType3;
+    private RadioButton rbType4;
+    private RadioButton rbType5;
+    private RadioButton rbType6;
+    private RadioButton rbType7;
+    private RadioButton rbType8;
+    private RadioGroup rgPaymentType;
+    private EditText edtAmount;
+    private EditText edtData;
+    private RadioButton rgDay4;
+    private RadioButton rgDay5;
+    private RadioButton rgDay6;
+    private RadioButton rgDay7;
+    private RadioGroup rgDays;
+    private EditText edtSuggestion;
+    private Button btnPay;
+    private List<String> countries;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        this.btnPay = (Button) findViewById(R.id.btnPay);
+        this.edtSuggestion = (EditText) findViewById(R.id.edtSuggestion);
+        this.rgDays = (RadioGroup) findViewById(R.id.rgDays);
+        this.rgDay7 = (RadioButton) findViewById(R.id.rgDay7);
+        this.rgDay6 = (RadioButton) findViewById(R.id.rgDay6);
+        this.rgDay5 = (RadioButton) findViewById(R.id.rgDay5);
+        this.rgDay4 = (RadioButton) findViewById(R.id.rgDay4);
+        this.edtData = (EditText) findViewById(R.id.edtData);
+        this.edtAmount = (EditText) findViewById(R.id.edtAmount);
+        this.rgPaymentType = (RadioGroup) findViewById(R.id.rgPaymentType);
+        this.rbType8 = (RadioButton) findViewById(R.id.rbType8);
+        this.rbType7 = (RadioButton) findViewById(R.id.rbType7);
+        this.rbType6 = (RadioButton) findViewById(R.id.rbType6);
+        this.rbType5 = (RadioButton) findViewById(R.id.rbType5);
+        this.rbType4 = (RadioButton) findViewById(R.id.rbType4);
+        this.rbType3 = (RadioButton) findViewById(R.id.rbType3);
+        this.rbType2 = (RadioButton) findViewById(R.id.rbType2);
+        this.rbType1 = (RadioButton) findViewById(R.id.rbType1);
+        this.edtName = (EditText) findViewById(R.id.edtName);
+        this.spinnerCountry = (Spinner) findViewById(R.id.spinnerCountry);
+        this.edtEmail = (EditText) findViewById(R.id.edtEmail);
+        this.appBar = (AppBarLayout) findViewById(R.id.appBar);
+
+        String[] myResArray = getResources().getStringArray(R.array.countries_array);
+
+        spinnerCountry.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+            }
+        });
+
+        //Creating the ArrayAdapter instance having the country list
+        countries = new ArrayList<>();
+
+        countries = Arrays.asList(myResArray);
+        ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, countries);
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //Setting the ArrayAdapter data on the Spinner
+        spinnerCountry.setAdapter(aa);
 
 
         // Initializing Queue for Volley
@@ -144,6 +221,7 @@ entry.367219391 transaction id
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
     private void startStatusCheckupforInApp() {
@@ -176,6 +254,33 @@ entry.367219391 transaction id
     }
 
     public void startPayment(View view) {
+        if(edtEmail.getText().toString().trim().length() == 0){
+            Toast.makeText(MainActivity.this,"Enter your email id",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(edtName.getText().toString().trim().length() == 0){
+            Toast.makeText(MainActivity.this,"Enter your name",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(edtAmount.getText().toString().trim().length() == 0){
+            Toast.makeText(MainActivity.this,"Enter emount",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(edtData.getText().toString().trim().length() == 0){
+            Toast.makeText(MainActivity.this,"Enter Mobile Number/ E-mail id/ BHIM UPI ID/ Bank Details",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(edtEmail.getText().toString().trim().length() == 0){
+            Toast.makeText(MainActivity.this,"",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+
         if (mHelper != null) mHelper.flagEndAsync();
         try {
             isInAppInProgree = true;
