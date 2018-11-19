@@ -61,9 +61,16 @@ public class MainActivity extends AppCompatActivity {
     // Google Forms URL
     public static final String url = "https://docs.google.com/forms/d/e/1FAIpQLSfUTYmHb8o2QXGg7I6qmbg3dm2S8nK4PYBa1HIldp2VIYZkwQ/formResponse";
 
-    // Google Form's Column ID
-    public static final String nameField = "entry.1317516008";
-    public static final String phoneField = "entry.1563719254";
+    public static final String email = "emailAddress";
+    public static final String country = "entry.1372464918";
+    public static final String name = "entry.1374722863";
+    public static final String payment_mode = "entry.403838916";
+    public static final String amount = "entry.1622831794";
+    public static final String data = "entry.807570936";
+    public static final String days = "entry.2019417577";
+    public static final String suggestion = "entry.423242404";
+    public static final String transaction_id = "entry.367219391";
+    public static final String userId = "entry.1322304647";
 
 
     private AppBarLayout appBar;
@@ -79,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
     private RadioButton rbType7;
     private RadioButton rbType8;
     private RadioGroup rgPaymentType;
-    private EditText edtAmount;
     private EditText edtData;
     private RadioButton rgDay4;
     private RadioButton rgDay5;
@@ -89,6 +95,10 @@ public class MainActivity extends AppCompatActivity {
     private EditText edtSuggestion;
     private Button btnPay;
     private List<String> countries;
+    private String paymentMode = "";
+    private String DaysTxt = "";
+    private Spinner spinnerAmount;
+    private List<String> amountList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +113,6 @@ public class MainActivity extends AppCompatActivity {
         this.rgDay5 = (RadioButton) findViewById(R.id.rgDay5);
         this.rgDay4 = (RadioButton) findViewById(R.id.rgDay4);
         this.edtData = (EditText) findViewById(R.id.edtData);
-        this.edtAmount = (EditText) findViewById(R.id.edtAmount);
         this.rgPaymentType = (RadioGroup) findViewById(R.id.rgPaymentType);
         this.rbType8 = (RadioButton) findViewById(R.id.rbType8);
         this.rbType7 = (RadioButton) findViewById(R.id.rbType7);
@@ -115,44 +124,31 @@ public class MainActivity extends AppCompatActivity {
         this.rbType1 = (RadioButton) findViewById(R.id.rbType1);
         this.edtName = (EditText) findViewById(R.id.edtName);
         this.spinnerCountry = (Spinner) findViewById(R.id.spinnerCountry);
+        this.spinnerAmount = (Spinner) findViewById(R.id.spinnerAmount);
         this.edtEmail = (EditText) findViewById(R.id.edtEmail);
         this.appBar = (AppBarLayout) findViewById(R.id.appBar);
 
-        String[] myResArray = getResources().getStringArray(R.array.countries_array);
-
-        spinnerCountry.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-            }
-        });
+        String[] myResArray = getResources().getStringArray(R.array.countries);
+        String[] amountArray = getResources().getStringArray(R.array.amount);
 
         //Creating the ArrayAdapter instance having the country list
         countries = new ArrayList<>();
+        amountList = new ArrayList<>();
 
         countries = Arrays.asList(myResArray);
+        amountList = Arrays.asList(amountArray);
+
         ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, countries);
+        ArrayAdapter amountAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, amountList);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        amountAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
         spinnerCountry.setAdapter(aa);
+        spinnerAmount.setAdapter(amountAdapter);
 
 
         // Initializing Queue for Volley
         queue = Volley.newRequestQueue(getApplicationContext());
-
-//        postData("ishan", "soni");
-
-        /*
-        emailAddress
-entry.1372464918  country
-entry.1374722863  name
-entry.403838916 payment mode
-entry.1622831794 amount
-entry.807570936 mobile num/bhim upi
-entry.2019417577 days
-entry.423242404 suggestion (optional)
-entry.367219391 transaction id
-        */
 
         mHelper = new IabHelper(MainActivity.this, BASE64_ENCODED_PUBLIC_KEY);
         mHelper.enableDebugLogging(true, "Purchase json");
@@ -204,13 +200,17 @@ entry.367219391 transaction id
                         public void onConsumeFinished(Purchase purchase,
                                                       IabResult result) {
                             if (result.isSuccess()) {
-                                Toast.makeText(MainActivity.this, "Purchased", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(MainActivity.this, "Purchased", Toast.LENGTH_SHORT).show();
 //                                Functions.showToast(RewardsActivity.this, packageName + AppConstants.SPACE + getString(R.string.package_label) + AppConstants.SPACE + getString(R.string.msg_success_purchased));
 //                                if (Functions.isConnected(context)) {
 //                                    callPackageUpdateApi();
 //                                } else {
 //                                    Functions.showToast(context, getString(R.string.check_internet));
 //                                }
+
+                                postData(edtEmail.getText().toString().trim(), countries.get(spinnerCountry.getSelectedItemPosition()), edtName.getText().toString().trim(), paymentMode, amountList.get(spinnerAmount.getSelectedItemPosition()), edtData.getText().toString().trim(), DaysTxt, edtSuggestion.getText().toString().trim(), TransactionRefID);
+
+
                             } else {
                                 Log.d(TAG, "In-app Billing mConsumeFinishedListener failed: " +
                                         result);
@@ -254,31 +254,61 @@ entry.367219391 transaction id
     }
 
     public void startPayment(View view) {
-        if(edtEmail.getText().toString().trim().length() == 0){
-            Toast.makeText(MainActivity.this,"Enter your email id",Toast.LENGTH_SHORT).show();
+        if (edtEmail.getText().toString().trim().length() == 0) {
+            Toast.makeText(MainActivity.this, "Enter your email id", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if(edtName.getText().toString().trim().length() == 0){
-            Toast.makeText(MainActivity.this,"Enter your name",Toast.LENGTH_SHORT).show();
+        if (edtName.getText().toString().trim().length() == 0) {
+            Toast.makeText(MainActivity.this, "Enter your name", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if(edtAmount.getText().toString().trim().length() == 0){
-            Toast.makeText(MainActivity.this,"Enter emount",Toast.LENGTH_SHORT).show();
+        if (edtData.getText().toString().trim().length() == 0) {
+            Toast.makeText(MainActivity.this, "Enter Mobile Number/ E-mail id/ BHIM UPI ID/ Bank Details", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if(edtData.getText().toString().trim().length() == 0){
-            Toast.makeText(MainActivity.this,"Enter Mobile Number/ E-mail id/ BHIM UPI ID/ Bank Details",Toast.LENGTH_SHORT).show();
+        if (edtEmail.getText().toString().trim().length() == 0) {
+            Toast.makeText(MainActivity.this, "", Toast.LENGTH_SHORT).show();
             return;
         }
+        if (rgDay4.isChecked())
+            DaysTxt = "4";
 
-        if(edtEmail.getText().toString().trim().length() == 0){
-            Toast.makeText(MainActivity.this,"",Toast.LENGTH_SHORT).show();
-            return;
-        }
+        if (rgDay5.isChecked())
+            DaysTxt = "5";
 
+        if (rgDay6.isChecked())
+            DaysTxt = "6";
+
+        if (rgDay7.isChecked())
+            DaysTxt = "7";
+
+
+        if (rbType1.isChecked())
+            paymentMode = rbType1.getText().toString().trim();
+
+        if (rbType2.isChecked())
+            paymentMode = rbType2.getText().toString().trim();
+
+        if (rbType3.isChecked())
+            paymentMode = rbType3.getText().toString().trim();
+
+        if (rbType4.isChecked())
+            paymentMode = rbType4.getText().toString().trim();
+
+        if (rbType5.isChecked())
+            paymentMode = rbType5.getText().toString().trim();
+
+        if (rbType6.isChecked())
+            paymentMode = rbType6.getText().toString().trim();
+
+        if (rbType7.isChecked())
+            paymentMode = rbType7.getText().toString().trim();
+
+        if (rbType8.isChecked())
+            paymentMode = rbType8.getText().toString().trim();
 
 
         if (mHelper != null) mHelper.flagEndAsync();
@@ -330,7 +360,16 @@ entry.367219391 transaction id
     }
 
 
-    public void postData(final String name, final String phone) {
+    public void postData(final String email,
+                         final String country,
+                         final String name,
+                         final String payment_mode,
+                         final String amount,
+                         final String data,
+                         final String days,
+                         final String suggestion,
+                         final String transaction_id) {
+
         StringRequest request = new StringRequest(
                 Request.Method.POST,
                 url,
@@ -340,6 +379,13 @@ entry.367219391 transaction id
                         Log.d("TAG", "Response: " + response);
                         if (response.length() > 0) {
                             Toast.makeText(MainActivity.this, "Successfully Posted", Toast.LENGTH_LONG).show();
+                            edtName.setText("");
+                            edtData.setText("");
+                            edtEmail.setText("");
+                            edtSuggestion.setText("");
+                            spinnerAmount.setSelection(0);
+
+
                         } else {
                             Toast.makeText(MainActivity.this, "try again", Toast.LENGTH_LONG).show();
                         }
@@ -353,8 +399,17 @@ entry.367219391 transaction id
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put(nameField, name);
-                params.put(phoneField, phone);
+                params.put(email, email);
+                params.put(country, country);
+                params.put(name, name);
+                params.put(payment_mode, payment_mode);
+                params.put(amount, amount);
+                params.put(data, data);
+                params.put(days, days);
+                params.put(suggestion, suggestion);
+                params.put(transaction_id, transaction_id);
+                params.put(userId, PrefUtils.getEmailID(MainActivity.this));
+
                 return params;
             }
         };
