@@ -3,16 +3,22 @@ package com.jatin.rewards;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -59,9 +65,11 @@ public class MainActivity extends AppCompatActivity {
 
     RequestQueue queue;
     // Google Forms URL
-    public static final String url = "https://docs.google.com/forms/d/e/1FAIpQLSfUTYmHb8o2QXGg7I6qmbg3dm2S8nK4PYBa1HIldp2VIYZkwQ/formResponse";
+    public static final String url = "https://docs.google.com/forms/d/1Kto9UsHR1OTerLjxsXvGkTflb7PgrXQkxYdjoXRcQzg/formResponse";
 
-    public static final String email = "emailAddress";
+//    public static final String email = "entry.1317516008";
+//    public static final String country = "entry.1563719254";
+    public static final String email = "entry.624388695";
     public static final String country = "entry.1372464918";
     public static final String name = "entry.1374722863";
     public static final String payment_mode = "entry.403838916";
@@ -99,12 +107,22 @@ public class MainActivity extends AppCompatActivity {
     private String DaysTxt = "";
     private Spinner spinnerAmount;
     private List<String> amountList;
+    private Toolbar toolbar;
+    private LinearLayout drawerContainer;
+    private DrawerLayout mDrawerLayout;
+    private View drawerView;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private LinearLayout llContactUs;
+    private LinearLayout llAboutUs;
+    private TextView txtEmailId;
+    private TextView txtUserName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        this.toolbar = (Toolbar) findViewById(R.id.toolbar);
         this.btnPay = (Button) findViewById(R.id.btnPay);
         this.edtSuggestion = (EditText) findViewById(R.id.edtSuggestion);
         this.rgDays = (RadioGroup) findViewById(R.id.rgDays);
@@ -145,6 +163,40 @@ public class MainActivity extends AppCompatActivity {
         //Setting the ArrayAdapter data on the Spinner
         spinnerCountry.setAdapter(aa);
         spinnerAmount.setAdapter(amountAdapter);
+
+
+        drawerContainer = (LinearLayout) findViewById(R.id.fragment_navigation_drawer);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        drawerView = LayoutInflater.from(this).inflate(R.layout.nav_drawer, null, false);
+
+        drawerContainer.removeAllViews();
+        drawerContainer.addView(drawerView);
+
+        setUpDrawer();
+
+        txtUserName = (TextView) drawerView.findViewById(R.id.txtUserName);
+        txtEmailId = (TextView) drawerView.findViewById(R.id.txtEmailId);
+        llAboutUs = (LinearLayout) drawerView.findViewById(R.id.llAboutUs);
+        llContactUs = (LinearLayout) drawerView.findViewById(R.id.llContactUs);
+
+
+        llContactUs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        llAboutUs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        txtEmailId.setText(PrefUtils.getEmailID(this));
+        txtUserName.setText(PrefUtils.getUserName(this));
 
 
         // Initializing Queue for Volley
@@ -360,15 +412,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void postData(final String email,
-                         final String country,
-                         final String name,
-                         final String payment_mode,
-                         final String amount,
-                         final String data,
-                         final String days,
-                         final String suggestion,
-                         final String transaction_id) {
+    public void postData(final String emailTxt,
+                         final String countryTxt,
+                         final String nameTxt,
+                         final String payment_modeTxt,
+                         final String amountTxt,
+                         final String dataTxt,
+                         final String daysTxt,
+                         final String suggestionTxt,
+                         final String transactionIdTxt) {
 
         StringRequest request = new StringRequest(
                 Request.Method.POST,
@@ -399,15 +451,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put(email, email);
-                params.put(country, country);
-                params.put(name, name);
-                params.put(payment_mode, payment_mode);
-                params.put(amount, amount);
-                params.put(data, data);
-                params.put(days, days);
-                params.put(suggestion, suggestion);
-                params.put(transaction_id, transaction_id);
+                params.put(email, emailTxt);
+                params.put(country, countryTxt);
+                params.put(name, nameTxt);
+                params.put(payment_mode, payment_modeTxt);
+                params.put(amount, amountTxt);
+                params.put(data, dataTxt);
+                params.put(days, daysTxt);
+                params.put(suggestion, suggestionTxt);
+                params.put(transaction_id, transactionIdTxt);
                 params.put(userId, PrefUtils.getEmailID(MainActivity.this));
 
                 return params;
@@ -418,5 +470,47 @@ public class MainActivity extends AppCompatActivity {
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(request);
+    }
+
+
+    public void setUpDrawer() {
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.open, R.string.close) {
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                invalidateOptionsMenu();
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                invalidateOptionsMenu();
+            }
+
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                if (slideOffset < 0.6) {
+                    //      toolbar.setAlpha(1 - slideOffset);
+                }
+            }
+        };
+
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
+
+        mDrawerLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mDrawerToggle.syncState();
+            }
+        });
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!mDrawerLayout.isDrawerOpen(Gravity.START)) {
+                    mDrawerLayout.openDrawer(Gravity.START);
+                }
+            }
+        });
     }
 }

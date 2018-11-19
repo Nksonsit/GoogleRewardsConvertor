@@ -238,6 +238,8 @@
         <item>Zimbabwe</item>
     </string-array>
 
+    <string name="open">Open</string>
+    <string name="close">Close</string>
     <string-array name="amount">
         <item>10</item>
         <item>20</item>

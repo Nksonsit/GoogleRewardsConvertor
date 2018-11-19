@@ -97,6 +97,7 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
             loginRequest.setUsername(acct.getEmail());*/
             PrefUtils.setLoggedIn(SplashActivity.this, true);
             PrefUtils.setEmailId(SplashActivity.this, acct.getEmail());
+            PrefUtils.setUserName(SplashActivity.this, acct.getDisplayName());
 
             Intent intent = new Intent(SplashActivity.this, MainActivity.class);
             startActivity(intent);
