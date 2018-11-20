@@ -1,6 +1,7 @@
 package com.jatin.rewards;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.widget.DrawerLayout;
@@ -45,7 +46,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
 
-    private String BASE64_ENCODED_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtgIphJjc3n79WTzRRMuVE9w0rIae+YMJC8bfcIwkBxCVo2JrqPvSXp7e7vFXkTZcD3spphJhRNOm3FwfiATgvxQD63tEm2B8Uva3ay7CcxeLF9fIwiuOrVSaYrtzJm0ie5K2w+LjtC2VYAKM6Fu7/ka1/bjHJ7eoBCa4arvsCjquHZXuyw2CAfg98rpPqDfXVl8qRWb3JQ2JbrcKDdL08nkHeVJa71OEuNoLIx6K4Ujn97F69sLLV+qtK64D5zAioCt3nTdIGKF2gHPvKyd184yXLRZiGA+dBbnVwVEK/gx72C+x6ps//cFiF7WLDbC4GIgSk4HqcYlTWzcVmIDq3wIDAQAB";
+    private String BASE64_ENCODED_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwAhNe7wbTkSfr5bcFuWRzknFHB4aLv/7QmKHSewneP2mcKsqi0Xp4Bs9x1Aom220gb1RVdNXGYlQoDOt1eV/dL2cqB6+n+Urfn4rQc+CwVU/LBlAoxFHfzw66JKByZ1duZDpNV+yNWhMJqtgc6fjQ6NELSf0dg4LEQFanDT8IHvRbtfZ7Rk02BjazwsixAM++vqhns3nmZQV2N0U1ZNemdvdBzlWoQpatM/kIOznxAO4Zjx89Wg8F4Z5bb0kvh2xwAT7o+prbSXLiJzVQAQowEtn13LkhykkSaooN2zNWXMn+rXuFDT99/ySt3Isc1+7FdcOqE+/3OXmYSVrDaIGgQIDAQAB";
 
     private static final String TAG = "MainActivity";
     private IabHelper mHelper;
@@ -54,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
     private IabHelper.OnConsumeFinishedListener mConsumeFinishedListener;
     private boolean isInAppInProgree = false;
     private boolean isBought = false;
-    public static String ITEM_SKU = "android.test.purchased";
-    //    public static String ITEM_SKU = "ishan_1012";
+    //    public static String ITEM_SKU = "android.test.purchased";
+//        public static String ITEM_SKU = "ishan_1012";
     private static int INAPP_SUCECESS_RESPONSE_CODE = 10001;
     public static final String RESPONSE_INAPP_PURCHASE_DATA = "INAPP_PURCHASE_DATA";
     public static final String RESPONSE_INAPP_SIGNATURE = "INAPP_DATA_SIGNATURE";
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
     // Google Forms URL
     public static final String url = "https://docs.google.com/forms/d/1Kto9UsHR1OTerLjxsXvGkTflb7PgrXQkxYdjoXRcQzg/formResponse";
 
-//    public static final String email = "entry.1317516008";
+    //    public static final String email = "entry.1317516008";
 //    public static final String country = "entry.1563719254";
     public static final String email = "entry.624388695";
     public static final String country = "entry.1372464918";
@@ -116,6 +117,9 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout llAboutUs;
     private TextView txtEmailId;
     private TextView txtUserName;
+    private LinearLayout llRateUs;
+    private LinearLayout llTC;
+    private List<String> amountCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,6 +156,36 @@ public class MainActivity extends AppCompatActivity {
         //Creating the ArrayAdapter instance having the country list
         countries = new ArrayList<>();
         amountList = new ArrayList<>();
+        amountCode = new ArrayList<>();
+
+        amountCode.add("product_10");
+        amountCode.add("product_20");
+        amountCode.add("product_30");
+        amountCode.add("product_40");
+        amountCode.add("product_50");
+        amountCode.add("product_60");
+        amountCode.add("product_70");
+        amountCode.add("product_80");
+        amountCode.add("product_90");
+        amountCode.add("product_100");
+        amountCode.add("product_150");
+        amountCode.add("product_200");
+        amountCode.add("product_250");
+        amountCode.add("product_300");
+        amountCode.add("product_350");
+        amountCode.add("product_400");
+        amountCode.add("product_450");
+        amountCode.add("product_500");
+        amountCode.add("product_550");
+        amountCode.add("product_600");
+        amountCode.add("product_650");
+        amountCode.add("product_700");
+        amountCode.add("product_750");
+        amountCode.add("product_800");
+        amountCode.add("product_850");
+        amountCode.add("product_900");
+        amountCode.add("product_950");
+        amountCode.add("product_1000");
 
         countries = Arrays.asList(myResArray);
         amountList = Arrays.asList(amountArray);
@@ -179,19 +213,44 @@ public class MainActivity extends AppCompatActivity {
         txtEmailId = (TextView) drawerView.findViewById(R.id.txtEmailId);
         llAboutUs = (LinearLayout) drawerView.findViewById(R.id.llAboutUs);
         llContactUs = (LinearLayout) drawerView.findViewById(R.id.llContactUs);
+        llRateUs = (LinearLayout) drawerView.findViewById(R.id.llRateUs);
+        llTC = (LinearLayout) drawerView.findViewById(R.id.llTC);
 
 
         llContactUs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(MainActivity.this, ContactUsActivity.class));
+                mDrawerLayout.closeDrawer(Gravity.START);
             }
         });
 
         llAboutUs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, AboutUsActivity.class));
+                mDrawerLayout.closeDrawer(Gravity.START);
+            }
+        });
 
+        llTC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new WebViewDialog(MainActivity.this, "file:///android_res/raw/tc.html", "Term and Condition");
+                mDrawerLayout.closeDrawer(Gravity.START);
+            }
+        });
+
+        llRateUs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDrawerLayout.closeDrawer(Gravity.START);
+                final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                } catch (android.content.ActivityNotFoundException anfe) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                }
             }
         });
 
@@ -211,13 +270,13 @@ public class MainActivity extends AppCompatActivity {
                 public void onIabPurchaseFinished(IabResult result,
                                                   Purchase purchase) {
                     if (result.isFailure()) {
-                        Log.d(TAG, "failure in listner" + result.toString());
+//                        Log.e(TAG, "failure in listner" + result.toString());
                         isInAppInProgree = false;
                         return;
-                    } else if (purchase.getSku().equals(ITEM_SKU)) {
+                    } else if (purchase.getSku().equals(amountCode.get(spinnerAmount.getSelectedItemPosition()))) {
                         isBought = true;
                         queryPurchasedItems();
-                        Log.d(TAG, "SKU" + purchase.getSku() + " " + ITEM_SKU);
+//                        Log.e(TAG, "SKU" + purchase.getSku() + " " + amountCode.get(spinnerAmount.getSelectedItemPosition()));
                     }
                 }
             };
@@ -230,14 +289,14 @@ public class MainActivity extends AppCompatActivity {
                                                  Inventory inventory) {
 
                 if (result.isFailure()) {
-                    Log.d(TAG, "In-app Billing query failed: " +
-                            result);
+//                    Log.e(TAG, "In-app Billing query failed: " +
+//                            result);
                     // Handle failure
                 } else {
-                    isBought = inventory.hasPurchase(ITEM_SKU);
+                    isBought = inventory.hasPurchase(amountCode.get(spinnerAmount.getSelectedItemPosition()));
                     if (isBought) {
                         try {
-                            mHelper.consumeAsync(inventory.getPurchase(ITEM_SKU),
+                            mHelper.consumeAsync(inventory.getPurchase(amountCode.get(spinnerAmount.getSelectedItemPosition())),
                                     mConsumeFinishedListener);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -252,7 +311,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onConsumeFinished(Purchase purchase,
                                                       IabResult result) {
                             if (result.isSuccess()) {
-//                                Toast.makeText(MainActivity.this, "Purchased", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "Purchased", Toast.LENGTH_SHORT).show();
 //                                Functions.showToast(RewardsActivity.this, packageName + AppConstants.SPACE + getString(R.string.package_label) + AppConstants.SPACE + getString(R.string.msg_success_purchased));
 //                                if (Functions.isConnected(context)) {
 //                                    callPackageUpdateApi();
@@ -264,8 +323,8 @@ public class MainActivity extends AppCompatActivity {
 
 
                             } else {
-                                Log.d(TAG, "In-app Billing mConsumeFinishedListener failed: " +
-                                        result);
+//                                Log.e(TAG, "In-app Billing mConsumeFinishedListener failed: " +
+//                                        result);
 //                                Functions.showToast(RewardsActivity.this, getString(R.string.try_again));
                             }
                         }
@@ -282,10 +341,10 @@ public class MainActivity extends AppCompatActivity {
                                        IabHelper.OnIabSetupFinishedListener() {
                                            public void onIabSetupFinished(IabResult result) {
                                                if (!result.isSuccess()) {
-                                                   Log.d(TAG, "In-app Billing setup failed: " +
-                                                           result);
+//                                                   Log.e(TAG, "In-app Billing setup failed: " +
+//                                                           result);
                                                } else {
-                                                   Log.d(TAG, "In-app Billing is set up OK");
+//                                                   Log.e(TAG, "In-app Billing is set up OK");
                                                    //consumeItem();
                                                }
                                            }
@@ -363,10 +422,11 @@ public class MainActivity extends AppCompatActivity {
             paymentMode = rbType8.getText().toString().trim();
 
 
+//        Log.e("sku", amountCode.get(spinnerAmount.getSelectedItemPosition()));
         if (mHelper != null) mHelper.flagEndAsync();
         try {
             isInAppInProgree = true;
-            mHelper.launchPurchaseFlow(MainActivity.this, ITEM_SKU, INAPP_SUCECESS_RESPONSE_CODE,
+            mHelper.launchPurchaseFlow(MainActivity.this, amountCode.get(spinnerAmount.getSelectedItemPosition()), INAPP_SUCECESS_RESPONSE_CODE,
                     mPurchaseFinishedListener, "mypurchasetoken");
         } catch (Exception e) {
             e.printStackTrace();
@@ -385,7 +445,7 @@ public class MainActivity extends AppCompatActivity {
         if (!mHelper.handleActivityResult(requestCode,
                 resultCode, data)) {
             super.onActivityResult(requestCode, resultCode, data);
-            Log.d(TAG, "onActivityResult" + requestCode + data);
+//            Log.e(TAG, "onActivityResult" + requestCode + data);
         } else {
             String purchaseData = data.getStringExtra(RESPONSE_INAPP_PURCHASE_DATA);
             String dataSignature = data.getStringExtra(RESPONSE_INAPP_SIGNATURE);
@@ -397,7 +457,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getPuchasedData(String purchaseData) {
-        Log.e("check", purchaseData);
+//        Log.e("check", purchaseData);
         try {
             JSONObject jsonObject = new JSONObject(purchaseData);
             if (jsonObject.has("orderId")) {
@@ -428,7 +488,7 @@ public class MainActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("TAG", "Response: " + response);
+//                        Log.e("TAG", "Response: " + response);
                         if (response.length() > 0) {
                             Toast.makeText(MainActivity.this, "Successfully Posted", Toast.LENGTH_LONG).show();
                             edtName.setText("");

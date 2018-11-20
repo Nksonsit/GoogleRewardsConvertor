@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal|center_vertical"
+    android:padding="10dp">
+
+    <FrameLayout
+        android:id="@+id/pop_window_feed_tagged_friends_ll"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#121824"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/dialog_tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/pop_window_feed_tagged_friends_ll">
+
+        <WebView
+            android:id="@+id/fragment_setting_terms_and_conditions_wv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none" />
+
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/pop_window_cancel_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/ic_close_circle"
+        android:backgroundTint="#ffffff" />
+</RelativeLayout>

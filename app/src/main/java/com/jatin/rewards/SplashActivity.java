@@ -7,8 +7,10 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -26,6 +28,8 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 007;
     private String TAG = "login";
+    private TextView txtReadMore;
+    private CheckBox cbTC;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +37,8 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
         setContentView(R.layout.activity_splash);
         this.btnLogin = (RelativeLayout) findViewById(R.id.btnLogin);
         this.txtGoogleLabel = (TextView) findViewById(R.id.txtGoogleLabel);
+        this.cbTC = (CheckBox) findViewById(R.id.cbTC);
+        this.txtReadMore = (TextView) findViewById(R.id.readMore);
 
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -47,13 +53,27 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!cbTC.isChecked()) {
+                    Toast.makeText(SplashActivity.this, "Please accept term and condition", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
                 startActivityForResult(signInIntent, RC_SIGN_IN);
             }
         });
 
+        txtReadMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new WebViewDialog(SplashActivity.this, "file:///android_res/raw/tc.html", "Term and Condition");
+            }
+        });
+
         if (PrefUtils.isUserLoggedIn(this)) {
             btnLogin.setVisibility(View.GONE);
+            txtReadMore.setVisibility(View.GONE);
+            cbTC.setVisibility(View.GONE);
 
             new CountDownTimer(1500, 1000) {
                 @Override
