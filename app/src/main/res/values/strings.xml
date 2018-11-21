@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Google Rewards Convertor</string>
+    <string name="app_name">Rewards Convertor</string>
 
     <string-array name="countries">
         <item>India</item>
