@@ -1,11 +1,14 @@
 package com.jatin.rewards;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -29,7 +32,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
@@ -374,6 +376,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startPayment(View view) {
+
         if (edtEmail.getText().toString().trim().length() == 0) {
             Toast.makeText(MainActivity.this, "Enter your email id", Toast.LENGTH_SHORT).show();
             return;
@@ -506,7 +509,25 @@ public class MainActivity extends AppCompatActivity {
                             edtSuggestion.setText("");
                             spinnerAmount.setSelection(0);
 
-                            showInterstitial();
+
+                            AlertDialog.Builder builder;
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                builder = new AlertDialog.Builder(MainActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+                            } else {
+                                builder = new AlertDialog.Builder(MainActivity.this);
+                            }
+                            builder.setTitle("Your transaction id")
+                                    .setMessage(TransactionRefID)
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            // continue with delete
+                                            dialog.dismiss();
+                                            showInterstitial();
+                                        }
+                                    })
+                                    .setCancelable(false)
+                                    .show();
+
 
                         } else {
                             Toast.makeText(MainActivity.this, "try again", Toast.LENGTH_LONG).show();
