@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Rewards Convertor</string>
+    <string name="banner_ad">ca-app-pub-5439267943407489/5614549950</string>
+    <string name="inter_ad">ca-app-pub-5439267943407489/3656516741</string>
+    <string name="admob_app_id">ca-app-pub-5439267943407489~7324299019</string>
 
     <string-array name="countries">
         <item>India</item>

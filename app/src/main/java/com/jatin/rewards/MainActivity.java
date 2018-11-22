@@ -29,6 +29,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.jatin.rewards.utils.IabHelper;
 import com.jatin.rewards.utils.IabResult;
 import com.jatin.rewards.utils.Inventory;
@@ -120,6 +124,8 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout llRateUs;
     private LinearLayout llTC;
     private List<String> amountCode;
+    private InterstitialAd mInterstitialAd;
+    private AdRequest interAdRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -333,6 +339,9 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+
+        showbannerAds();
+        loadInterstitialAds();
     }
 
     private void startStatusCheckupforInApp() {
@@ -497,6 +506,7 @@ public class MainActivity extends AppCompatActivity {
                             edtSuggestion.setText("");
                             spinnerAmount.setSelection(0);
 
+                            showInterstitial();
 
                         } else {
                             Toast.makeText(MainActivity.this, "try again", Toast.LENGTH_LONG).show();
@@ -573,4 +583,25 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    private void loadInterstitialAds() {
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(getString(R.string.inter_ad));
+        interAdRequest = new AdRequest.Builder().build();
+        mInterstitialAd.loadAd(interAdRequest);
+    }
+
+    private void showInterstitial() {
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+        }
+    }
+
+    private void showbannerAds() {
+        AdView mAdView = (AdView) findViewById(R.id.ad);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+    }
+
 }

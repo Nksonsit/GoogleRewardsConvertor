@@ -26,15 +26,52 @@
     </FrameLayout>
 
     <FrameLayout
+        android:background="#ffffff"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/pop_window_feed_tagged_friends_ll">
 
-        <WebView
-            android:id="@+id/fragment_setting_terms_and_conditions_wv"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="none" />
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="1) Please fill your correct details. If, something went wrong then we may contact your for further details."
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="2) If, you don't fill correct details. You can loose all your money because, without your correct details we will not be able to contact you."
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="3) If, you choose 4 days payout, you will be charged higher. For example:- currently you will recieve 61% in 7 days which is 100-30-9=61. if, you choose 4 days payout you will recieve 50 % of amount, which is 100-30-20=50."
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="4) Your details are safe with us. We do not SELL or RENT your details to anyone at any cost."
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="5) If, any kind of system error occurred while choosen payment mode we may contact you via call or email for different payment mode.(In worst case scenario)"
+                android:textSize="14sp" />
+
+        </LinearLayout>
 
     </FrameLayout>
 
