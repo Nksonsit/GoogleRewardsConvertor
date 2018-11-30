@@ -71,6 +71,13 @@
                 android:text="5) If, any kind of system error occurred while choosen payment mode we may contact you via call or email for different payment mode.(In worst case scenario)"
                 android:textSize="14sp" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="6) If you choose 3 days payout you will get 40% percent of the amount."
+                android:textSize="14sp" />
+
         </LinearLayout>
 
     </FrameLayout>

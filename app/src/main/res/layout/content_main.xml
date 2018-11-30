@@ -14,11 +14,11 @@
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
-            android:theme="@style/AppTheme.AppBarOverlay"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary">
+            android:background="@color/colorPrimary"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -51,6 +51,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="8dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:textStyle="bold"
+                android:text="( Note: Now you can transfer your money in 3 days with 40% of the amount. )" />
 
 
             <EditText
@@ -147,6 +154,12 @@
                     android:layout_height="wrap_content"
                     android:text="MOBILE RECHARGE" />
 
+                <RadioButton
+                    android:id="@+id/rbType9"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Donate" />
+
             </RadioGroup>
 
 
@@ -186,27 +199,27 @@
                 android:orientation="horizontal">
 
                 <RadioButton
+                    android:id="@+id/rgDay3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="3 Days" />
+
+                <RadioButton
                     android:id="@+id/rgDay4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
                     android:text="4 Days" />
 
-                <RadioButton
-                    android:visibility="gone"
-                    android:id="@+id/rgDay5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:text="5 Days" />
 
                 <RadioButton
-                    android:visibility="gone"
                     android:id="@+id/rgDay6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:text="6 Days" />
+                    android:text="6 Days"
+                    android:visibility="gone" />
 
                 <RadioButton
                     android:id="@+id/rgDay7"

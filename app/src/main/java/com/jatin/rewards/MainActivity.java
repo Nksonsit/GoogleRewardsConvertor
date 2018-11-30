@@ -100,10 +100,11 @@ public class MainActivity extends AppCompatActivity {
     private RadioButton rbType6;
     private RadioButton rbType7;
     private RadioButton rbType8;
+    private RadioButton rbType9;
     private RadioGroup rgPaymentType;
     private EditText edtData;
     private RadioButton rgDay4;
-    private RadioButton rgDay5;
+    private RadioButton rgDay3;
     private RadioButton rgDay6;
     private RadioButton rgDay7;
     private RadioGroup rgDays;
@@ -140,10 +141,11 @@ public class MainActivity extends AppCompatActivity {
         this.rgDays = (RadioGroup) findViewById(R.id.rgDays);
         this.rgDay7 = (RadioButton) findViewById(R.id.rgDay7);
         this.rgDay6 = (RadioButton) findViewById(R.id.rgDay6);
-        this.rgDay5 = (RadioButton) findViewById(R.id.rgDay5);
+        this.rgDay3 = (RadioButton) findViewById(R.id.rgDay3);
         this.rgDay4 = (RadioButton) findViewById(R.id.rgDay4);
         this.edtData = (EditText) findViewById(R.id.edtData);
         this.rgPaymentType = (RadioGroup) findViewById(R.id.rgPaymentType);
+        this.rbType9 = (RadioButton) findViewById(R.id.rbType9);
         this.rbType8 = (RadioButton) findViewById(R.id.rbType8);
         this.rbType7 = (RadioButton) findViewById(R.id.rbType7);
         this.rbType6 = (RadioButton) findViewById(R.id.rbType6);
@@ -399,8 +401,8 @@ public class MainActivity extends AppCompatActivity {
         if (rgDay4.isChecked())
             DaysTxt = "4";
 
-        if (rgDay5.isChecked())
-            DaysTxt = "5";
+        if (rgDay3.isChecked())
+            DaysTxt = "3";
 
         if (rgDay6.isChecked())
             DaysTxt = "6";
@@ -432,6 +434,9 @@ public class MainActivity extends AppCompatActivity {
 
         if (rbType8.isChecked())
             paymentMode = rbType8.getText().toString().trim();
+
+        if (rbType9.isChecked())
+            paymentMode = rbType9.getText().toString().trim();
 
 
 //        Log.e("sku", amountCode.get(spinnerAmount.getSelectedItemPosition()));
@@ -522,7 +527,7 @@ public class MainActivity extends AppCompatActivity {
                                         public void onClick(DialogInterface dialog, int which) {
                                             // continue with delete
                                             dialog.dismiss();
-                                            showInterstitial();
+                                            openNewDialog();
                                         }
                                     })
                                     .setCancelable(false)
@@ -561,6 +566,38 @@ public class MainActivity extends AppCompatActivity {
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(request);
+    }
+
+    private void openNewDialog() {
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(MainActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(MainActivity.this);
+        }
+        builder.setTitle("Rate Us")
+                .setMessage(TransactionRefID)
+                .setPositiveButton("Rate Us", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                        dialog.dismiss();
+                        final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                        try {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                        } catch (android.content.ActivityNotFoundException anfe) {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                        }
+                    }
+                })
+                .setNegativeButton("Later", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                        dialog.dismiss();
+                        showInterstitial();
+                    }
+                })
+                .setCancelable(false)
+                .show();
     }
 
 
