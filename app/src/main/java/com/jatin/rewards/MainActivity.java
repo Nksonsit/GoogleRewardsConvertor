@@ -168,10 +168,10 @@ public class MainActivity extends AppCompatActivity {
         amountList = new ArrayList<>();
         amountCode = new ArrayList<>();
 
-        amountCode.add("product_10");
+        /*amountCode.add("product_10");
         amountCode.add("product_20");
         amountCode.add("product_30");
-        amountCode.add("product_40");
+        amountCode.add("product_40");*/
         amountCode.add("product_50");
         amountCode.add("product_60");
         amountCode.add("product_70");

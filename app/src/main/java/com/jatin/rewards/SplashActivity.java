@@ -30,7 +30,7 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
     private String TAG = "login";
     private TextView txtReadMore;
     private CheckBox cbTC;
-
+//pwd jatin123
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
